@@ -1,0 +1,24 @@
+{
+  "name": "ophrys-gui",
+  "version": "0.0.0",
+  "description": "Ophrys GUI",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com-gonzaloea:gonzaloea/ophrys-gui.git"
+  },
+  "keywords": [
+    "Ophrys"
+  ],
+  "author": "Gonzalo Alvarez",
+  "license": "ISC",
+  "dependencies": {
+    "vue": "^3.2.23"
+  },
+  "devDependencies": {
+    "@vue/compiler-sfc": "^3.2.23"
+  }
+}
