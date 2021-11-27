@@ -1,24 +1,18 @@
 {
   "name": "ophrys-gui",
   "version": "0.0.0",
-  "description": "Ophrys GUI",
-  "main": "index.js",
   "scripts": {
-    "test": "test"
+    "dev": "vite",
+    "build": "vue-tsc --noEmit && vite build",
+    "serve": "vite preview"
   },
-  "repository": {
-    "type": "git",
-    "url": "git@github.com-gonzaloea:gonzaloea/ophrys-gui.git"
-  },
-  "keywords": [
-    "Ophrys"
-  ],
-  "author": "Gonzalo Alvarez",
-  "license": "ISC",
   "dependencies": {
-    "vue": "^3.2.23"
+    "vue": "^3.2.16"
   },
   "devDependencies": {
-    "@vue/compiler-sfc": "^3.2.23"
+    "@vitejs/plugin-vue": "^1.9.3",
+    "typescript": "^4.4.3",
+    "vite": "^2.6.4",
+    "vue-tsc": "^0.3.0"
   }
 }
