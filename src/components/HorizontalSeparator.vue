@@ -8,12 +8,10 @@
 <style scoped>
 
 .container {
-    margin-right:50px;
-    padding-left: 50px;
+    margin-left:80px;
+    padding-left: 60px;
     display:flex;
-    flex-direction: column;
-    justify-content: start;
-    align-items: flex-start;
+    flex-direction: row;
     width:100%;
     height: 100%;
 }

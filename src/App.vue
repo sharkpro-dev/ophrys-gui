@@ -5,12 +5,14 @@ import { RouterView } from 'vue-router';
 </script>
 
 <template>
-  <VerticalToolbar/>
+  <VerticalToolbar />
   
     <router-view v-slot="{ Component }">
-      <Transition name="fade" mode="out-in">
-        <component :is="Component" />
-      </Transition>
+      <suspense>
+        <Transition name="fade" mode="out-in">
+          <component :is="Component" />
+        </Transition>
+      </suspense>
     </router-view>
 
 </template>

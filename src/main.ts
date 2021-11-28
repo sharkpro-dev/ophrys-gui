@@ -6,6 +6,11 @@ import EnginePage from './pages/EnginePage.vue'
 import MarketData from './pages/MarketDataPage.vue'
 import APIs from './pages/APIsPage.vue'
 
+declare global {
+    interface Window {
+        __APP_VERSION__:string;
+    }
+}
 
 const routes = [
     { path: '/', component: DashboardPage },

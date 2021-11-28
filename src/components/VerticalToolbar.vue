@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import { RouterLink } from 'vue-router';
+
+let appVersion = window.__APP_VERSION__;
 
 defineProps({
     upHere: {
         type: Boolean,
         value: false
-    }
+    }   
 })
 
 </script>
@@ -16,7 +17,7 @@ defineProps({
 <nav @mouseover="upHere = true" @mouseleave="upHere = false">
     <router-link to="/">
         <div class="logo" >
-            <img alt="Vue logo" src="../assets/logo.png"  v-bind:class="{ effect: upHere }" /> <p class="ophrys"  v-bind:class="{ displayed: upHere }">Ophrys</p>
+            <img alt="Vue logo" src="../assets/logo.svg"  v-bind:class="{ effect: upHere }" /> <p class="ophrys"  v-bind:class="{ displayed: upHere }">Ophrys</p>
         </div>
     </router-link>
     <ul>
@@ -45,6 +46,7 @@ defineProps({
             </router-link>            
         </li>
     </ul>
+    <p v-bind:class="{ displayed: upHere }">v{{ appVersion }}</p>
 </nav>
   
 </template>
@@ -62,13 +64,15 @@ img.effect {
 }
 
 nav {
-
-    background-color: #ffd350;
+    display: flex;
+    flex-direction: column;
+    background-color: #1E88E5;
     -webkit-box-shadow: 7px 0 6px rgb(0 0 0 / 10%);
     box-shadow: 7px 0 6px rgb(0 0 0 / 10%);
     width:80px;
     transition: width 0.25s;
     font-size: 18px;
+    height: 100%;
 }
 
 nav:hover {
@@ -82,7 +86,7 @@ a{
     display:flex;
     min-width: 200px;
     flex-direction: row;
-    color: #000000;
+    color: #ffffff;
     text-decoration: none;
 }
 
@@ -124,11 +128,16 @@ p{
     opacity: 0;
     transition: none;
     cursor: pointer;
+    color: #ffffff;
 }
 p.displayed {
     visibility: visible;
     transition: visibility 0.5s 0.35s, opacity 0.5s 0.35s linear;
     opacity: 1;
+}
+
+p:last-of-type {
+  margin-top: auto;
 }
 
 </style>

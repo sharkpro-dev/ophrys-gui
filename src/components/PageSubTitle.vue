@@ -7,7 +7,8 @@
 <style scoped>
 
 .subtitle {
-    font-size: 20px;
+    font-size: 30px;
+    margin-bottom: 30px;
 }
 
 </style>
