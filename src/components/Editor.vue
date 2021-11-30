@@ -1,11 +1,10 @@
 <script setup lang="ts">
 
+import PageSubTitle from './PageSubTitle.vue';
 </script>
 
 <template>
-
-  <img alt="Ophrys logo" src="../assets/logo.svg" />
- 
+   <PageSubTitle>test</PageSubTitle>
 </template>
 
 <style scoped>
