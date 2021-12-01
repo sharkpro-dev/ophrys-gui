@@ -46,7 +46,7 @@ defineProps({
             </router-link>            
         </li>
     </ul>
-    <p v-bind:class="{ displayed: upHere }">v{{ appVersion }}</p>
+    <p v-bind:class="{ displayed: upHere }" class="version">v{{ appVersion }}</p>
 </nav>
   
 </template>
@@ -84,11 +84,15 @@ nav:hover {
 a{
     cursor: pointer;
     display:flex;
-    min-width: 200px;
     flex-direction: row;
     color: #ffffff;
     text-decoration: none;
 }
+
+a svg {
+    min-width: 35px;
+}
+
 
 li {
     margin-bottom: 10px;
@@ -129,15 +133,30 @@ p{
     transition: none;
     cursor: pointer;
     color: #ffffff;
+    min-width: 150px;
+    text-align: left;
 }
 p.displayed {
     visibility: visible;
-    transition: visibility 0.5s 0.35s, opacity 0.5s 0.35s linear;
+    transition: visibility 0.5s 0.45s, opacity 0.5s 0.45s linear;
     opacity: 1;
 }
 
 p:last-of-type {
   margin-top: auto;
+}
+
+a.router-link-active {
+    background-color: #00000017;
+    cursor: default;
+}
+
+a.router-link-active p {
+    cursor: default;
+}
+
+.version {
+    text-align: center;
 }
 
 </style>

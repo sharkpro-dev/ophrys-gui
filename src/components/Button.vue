@@ -1,5 +1,9 @@
+<script setup lang="ts">
+const emits = defineEmits(['click'])
+</script>
+
 <template>
-    <button>
+    <button @click="emits('click')">
         <slot></slot>
     </button>
 </template>
@@ -21,6 +25,7 @@ button {
     -webkit-box-shadow: 5px 5px 6px rgb(0 0 0 / 10%);
     box-shadow: 5px 5px 6px rgb(0 0 0 / 10%);
     font-family: 'Ubuntu Mono', monospace;
+    justify-content: center;
 }
 
 

@@ -16,6 +16,7 @@
     align-items: flex-start;
     width:100%;
     height: 100%;
+    transition: width 1s;
 }
 
 </style>
