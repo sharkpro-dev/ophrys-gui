@@ -1,7 +1,20 @@
+<script setup lang="ts">
+
+const props = defineProps({
+  label: String,
+  modelValue: String
+})
+
+const emit = defineEmits(['update:modelValue'])
+
+
+
+</script>
+
 <template>
     <div class="input-container">
         <label><slot></slot></label>
-        <input type="text">
+        <input type="text" :value="props.modelValue" @input="(e)=> $emit('update:modelValue', e.target.value)">
     </div>
 </template>
 

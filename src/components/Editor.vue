@@ -4,6 +4,7 @@ import PageSubTitle from './PageSubTitle.vue';
 import Button from './Button.vue';
 
 defineProps<{ title: string }>()
+const emits = defineEmits(['cancel', 'confirm'])
 
 </script>
 
@@ -13,8 +14,8 @@ defineProps<{ title: string }>()
       <PageSubTitle>{{title}}</PageSubTitle>
    </div>
    <slot></slot>
-   <Button>Confirmar</Button>
-   <Button>Cancelar</Button>
+   <Button @click="emits('confirm')">Confirmar</Button>
+   <Button @click="emits('cancel')">Cancelar</Button>
 </div>
 </template>
 

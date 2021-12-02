@@ -11,18 +11,26 @@ import Editor from "../components/Editor.vue";
 import TextField from "../components/TextField.vue";
 
 let subscriptions = ref([]) as any;
+let stream = ref() as any;
 let showSubscriptionEditor = ref(false);
 
 subscriptions.value = await apisRestClient.getSubscriptions();
-console.log(subscriptions.value )
+
 let subscriptionColumns = [
     { key: 'id', name: "ID", type: 'string'},
 ];
 
-function toggleEditor() {
-    showSubscriptionEditor.value = !showSubscriptionEditor.value;
+function showEditor() {
+    showSubscriptionEditor.value = true;
 }
 
+function hideEditor() {
+    showSubscriptionEditor.value = false;
+}
+
+async function subscribe(){
+    await apisRestClient.subscribe(stream.value);
+}
 
 </script>
 
@@ -32,14 +40,14 @@ function toggleEditor() {
 
         <div class=toolbar>
             <PageSubTitle>Subscriptions</PageSubTitle>
-            <Button @click="toggleEditor"> <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg> Subscription</Button>
+            <Button @click="showEditor"> <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg> Subscription</Button>
         </div>
         <Table :rows="subscriptions" :columns="subscriptionColumns"></Table>
     </PageContainer>
     <transition name="slide">
-        <Editor v-if="showSubscriptionEditor" :title="'New Subscription'">
+        <Editor v-if="showSubscriptionEditor" @confirm="subscribe" @cancel="hideEditor" :title="'New Subscription'">
     
-            <TextField>Stream</TextField>
+            <TextField v-model="stream">Stream</TextField>
         
         </Editor>
     </transition>
