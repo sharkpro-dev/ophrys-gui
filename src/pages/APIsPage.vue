@@ -11,10 +11,12 @@ import Editor from "../components/Editor.vue";
 import TextField from "../components/TextField.vue";
 
 let subscriptions = ref([]) as any;
-let stream = ref() as any;
+let stream = ref("") as any;
 let showSubscriptionEditor = ref(false);
 
-subscriptions.value = await apisRestClient.getSubscriptions();
+apisRestClient.getSubscriptions().then( subs => {
+    subscriptions.value = subs;
+});
 
 let subscriptionColumns = [
     { key: 'id', name: "ID", type: 'string'},
@@ -47,7 +49,7 @@ async function subscribe(){
     <transition name="slide">
         <Editor v-if="showSubscriptionEditor" @confirm="subscribe" @cancel="hideEditor" :title="'New Subscription'">
     
-            <TextField v-model="stream">Stream</TextField>
+            <TextField v-model="stream">Asset</TextField>
         
         </Editor>
     </transition>

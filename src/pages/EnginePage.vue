@@ -9,13 +9,16 @@ import Button from "../components/Button.vue";
 
 let workers = ref([]) as any;
 
-workers.value = await engineRestClient.getWorkers();
 
 let workerColumns = [
     { key: 'uuid', name: "ID", type: 'string'},
     { key: 'name', name: "Name", type: 'string'},
     { key: 'status', name: "Status", type: 'string'}
 ];
+
+engineRestClient.getWorkers().then(workersList => {
+    workers.value = workersList
+});
 
 </script>
 

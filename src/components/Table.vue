@@ -9,7 +9,7 @@ defineProps({
         value: []
     },
     columns: {
-        type: Object as PropType<{name: string, key: string,type: any}[]>,
+        type: Object as PropType<{name: string, key: any,type: any}[]>,
         value: []
     }  
 })
@@ -17,9 +17,7 @@ defineProps({
 </script>
 
 <template>
-
     <div class=container>
-
         <div class=header>
             <p v-for="column in columns">{{column.name}}</p>
         </div>
@@ -27,16 +25,14 @@ defineProps({
         <div  v-for="row in rows" class=row>
             <p v-for="column in columns">{{row[column.key]}}</p>
         </div>
-
     </div>
-
 </template>
 
 
 <style scoped>
 hr {
     width: -webkit-fill-available;
-    margin: 15px 70px 15px 70px;
+    margin: 10px;
     height: 1px;
     border-width: 0;
     color: rgb(0 0 0 / 15%);
@@ -45,21 +41,19 @@ hr {
 .container {
     display: flex;
     flex-direction: column;
+    line-height: 5px;
     width: -webkit-fill-available;
 }
 
 .header {
     font-weight: bold;
+    color: black;
 }
 
 .header, .row {
     display: flex;
     width: 100%;
     justify-content: space-between;
-}
-
-.row {
-    margin-bottom:10px;
 }
 
 .row:hover {

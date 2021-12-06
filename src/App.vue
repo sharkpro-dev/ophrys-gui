@@ -2,27 +2,14 @@
 import VerticalToolbar from './components/VerticalToolbar.vue';
 import { RouterView } from 'vue-router';
 
+//https://cryptologos.cc/logos/thumbs/polkadot-new.png
 </script>
 
 <template>
   <VerticalToolbar />
-  
 
-  <router-view v-slot="{ Component }">
-    <template v-if="Component">
-      <transition  name="fade" mode="out-in">
-        <keep-alive>
-          <suspense>
-            <component :is="Component"></component>
-            <template #fallback>
-              <div>
-                Loading...
-              </div>
-            </template>
-          </suspense>
-        </keep-alive>
-      </transition>
-    </template>
+  <router-view v-slot="slotProps">
+    <component :is="slotProps.Component"></component>
   </router-view>
 </template>
 
@@ -36,6 +23,7 @@ import { RouterView } from 'vue-router';
   color: #000000;
   display:flex;
   flex-direction: row;
+  overflow-x: hidden;
 }
 
 .fade-enter-active,

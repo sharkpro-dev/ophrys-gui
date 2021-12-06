@@ -9,11 +9,11 @@ class APIsRestClient {
         }}).then((response: AxiosResponse<any, any>) => response.data.result.map( (s: string) => {return { id: s}} ));
     }
 
-    public subscribe(stream :string) : Promise<any[]> {
-        return axios.post('http://localhost:9000/stream/subscribe',{
+    public subscribe(asset :string) : Promise<any[]> {
+        return axios.post('http://localhost:9000/asset/subscribe',{
 
                 providerId: "BinanceProvider",
-                stream: stream
+                asset: asset
         }, {
             headers: { 
                 'Content-Type' : 'application/json' 
