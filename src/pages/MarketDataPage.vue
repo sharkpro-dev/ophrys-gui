@@ -7,8 +7,9 @@ import OphrysTicker from "../model/ophrys-ticker.model";
 import OphrysDepth from "../model/ophrys-depth.model";
 import Table from "../components/Table.vue";
 import assetsService from "../services/assets.service";
+import FinancialValue from "../components/FinancialValue.vue";
 
-let symbol = 'usdtdai';
+let symbol = 'ethusdt';
 
 let depth = ref({} as OphrysDepth);
 let ticker = ref({} as OphrysTicker);
@@ -46,7 +47,7 @@ let assetName = assetsService.getCoinName(symbol)
 
 <template>
     <PageContainer>
-        <PageTitle>MarketData</PageTitle>
+        <PageTitle>Market Data</PageTitle>
         <div class="header">
             <img v-bind:src="logoUrl" />
             <div class="identifier">
@@ -54,14 +55,25 @@ let assetName = assetsService.getCoinName(symbol)
                 <p class="symbol">{{ ticker?.symbol }}</p>
             </div>
             <div class="sub-identifier">
-                <p class="last-price">{{ ticker?.last_price.toPrecision(4) }}</p>
+                <FinancialValue class="last-price" :flash="true" :model-value="ticker?.last_price"></FinancialValue>
                 <div
                     class="variation-container"
                     v-bind:class="{ 'decreasing': ticker?.price_change < 0, 'increasing': ticker?.price_change > 0 }"
                 >
-                    <p class="variation">{{ ticker?.price_change.toPrecision(4) }}</p>
-                    <p>({{ ticker?.price_change_percent.toPrecision(3) }}%)</p>
+                    <p class="variation">{{ ticker?.price_change?.toPrecision(4) }}</p>
+                    <p> ({{ ticker?.price_change_percent?.toPrecision(3) }}%)</p>
                 </div>
+            </div>
+            <div class="additional-data">
+                <FinancialValue :flash="true" :label="'High price'" :model-value="ticker?.high_price"> </FinancialValue>
+                <FinancialValue :flash="true" :label="'Low price'"  :model-value="ticker?.low_price"></FinancialValue>
+                <FinancialValue :label="'N trades'" :model-value="ticker?.number_of_trades"> </FinancialValue>
+            </div>
+            <div class="additional-data">
+
+                <FinancialValue :label="'Opening price'" :model-value="ticker?.opening_price"> </FinancialValue>
+                <FinancialValue :label="'Trade volume'" :model-value="ticker?.trade_volume"> </FinancialValue>
+                <FinancialValue :flash="true" :label="'VWAP'" :model-value="ticker?.vwap"> </FinancialValue>
             </div>
         </div>
         <div class="depth">
@@ -74,7 +86,7 @@ let assetName = assetsService.getCoinName(symbol)
 <style scoped>
 img {
     height: auto;
-    margin: auto 25px auto auto;
+    margin: auto 35px auto auto;
 }
 .identifier {
     display: flex;
@@ -83,16 +95,28 @@ img {
     justify-content: center;
     margin-right: 50px;
 }
+.additional-data{
+    display:flex;
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: 20px;
+}
+.additional-data p {
+    white-space: nowrap;
+    margin: 0
+}
+
 .header {
     display: flex;
     font-size: 25px;
     margin-left: 25px;
+    margin-bottom: 20px;
 }
 
 .sub-identifier {
     display: flex;
-    align-items: baseline;
-    line-height: 0;
+    align-items: center;
+    line-height: 50px;
     margin:0;
     margin-right: 50px;
 }
@@ -107,14 +131,14 @@ img {
     margin: 0;
     height: 40px;
     line-height: 40px;
-    font-weight: 600;
+    font-weight: 300;
 }
 
 .name {
     font-size:45px;
     margin: 0;
-    height: 50px;
-    line-height: 50px;
+    height: 55px;
+    line-height: 55px;
 }
 
 .last-price {

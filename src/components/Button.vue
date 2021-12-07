@@ -24,7 +24,7 @@ button {
     padding: 0 30px 0 30px;
     -webkit-box-shadow: 5px 5px 6px rgb(0 0 0 / 10%);
     box-shadow: 5px 5px 6px rgb(0 0 0 / 10%);
-    font-family: 'Ubuntu Mono', monospace;
+    font-family: 'Lato', sans-serif;
     justify-content: center;
 }
 

@@ -2,7 +2,6 @@
 import VerticalToolbar from './components/VerticalToolbar.vue';
 import { RouterView } from 'vue-router';
 
-//https://cryptologos.cc/logos/thumbs/polkadot-new.png
 </script>
 
 <template>
@@ -16,7 +15,7 @@ import { RouterView } from 'vue-router';
 <style>
 #app {
   height: 100%;
-  font-family: 'Ubuntu Mono', monospace;
+  font-family: 'Lato', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;

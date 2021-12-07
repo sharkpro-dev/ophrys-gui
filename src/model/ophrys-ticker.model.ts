@@ -9,6 +9,6 @@ export default interface OphrysTicker {
     opening_price: number;
     high_price: number;
     low_price: number;
-    trave_volume: number;
+    trade_volume: number;
     number_of_trades: number;
 }

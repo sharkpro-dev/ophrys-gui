@@ -14,7 +14,7 @@ const emit = defineEmits(['update:modelValue'])
 <template>
     <div class="input-container">
         <label><slot></slot></label>
-        <input type="text" :value="props.modelValue" @input="(e)=> $emit('update:modelValue', e.target.value)">
+        <input type="text" :value="props.modelValue" @input="(e)=> $emit('update:modelValue', e?.target?.value)">
     </div>
 </template>
 
@@ -38,7 +38,7 @@ input {
     line-height: 25px;
     height: 40px;
     font-size: 25px;
-    font-family: 'Ubuntu Mono', monospace;
+    font-family: 'Lato', sans-serif;
     width: 100%;
 
 }
