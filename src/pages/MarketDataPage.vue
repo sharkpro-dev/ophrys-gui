@@ -8,17 +8,35 @@ import OphrysDepth from "../model/ophrys-depth.model";
 import Table from "../components/Table.vue";
 import assetsService from "../services/assets.service";
 import FinancialValue from "../components/FinancialValue.vue";
+import SearchTextField from "../components/SearchTextField.vue";
+import coins from "../assets/criptos.json";
 
-let symbol = 'ethusdt';
+let symbol = 'adausdt';
 
 let depth = ref({} as OphrysDepth);
 let ticker = ref({} as OphrysTicker);
 
+let coinsData = Object.values(coins);
+
+marketDataRestClient.getDepth(symbol).then(depthResponse => {
+    depthResponse.asks = depthResponse.asks.filter( a => a[1] > 0)
+    depthResponse.bids = depthResponse.bids.filter( b => b[1] > 0)
+    depth.value = depthResponse;
+});
+
+
 let depthInterval = setInterval(() => {
     marketDataRestClient.getDepth(symbol).then(depthResponse => {
+        depthResponse.asks = depthResponse.asks.filter( a => a[1] > 0)
+        depthResponse.bids = depthResponse.bids.filter( b => b[1] > 0)
         depth.value = depthResponse;
     });
 }, 2000)
+
+
+marketDataRestClient.getTicker(symbol).then(tickerResponse => {
+    ticker.value = tickerResponse;
+});
 
 let tickerInterval = setInterval(() => {
     marketDataRestClient.getTicker(symbol).then(tickerResponse => {
@@ -51,6 +69,7 @@ let assetName = assetsService.getCoinName(symbol)
         <div class="header">
             <img v-bind:src="logoUrl" />
             <div class="identifier">
+                <SearchTextField :item-key="'key'" :limit="10" :item-presentation="'name'" :data-source="coinsData"  ></SearchTextField>
                 <p class="name">{{ assetName }}</p>
                 <p class="symbol">{{ ticker?.symbol }}</p>
             </div>
@@ -60,19 +79,19 @@ let assetName = assetsService.getCoinName(symbol)
                     class="variation-container"
                     v-bind:class="{ 'decreasing': ticker?.price_change < 0, 'increasing': ticker?.price_change > 0 }"
                 >
-                    <p class="variation">{{ ticker?.price_change?.toPrecision(4) }}</p>
-                    <p> ({{ ticker?.price_change_percent?.toPrecision(3) }}%)</p>
+                    <FinancialValue class="variation" :model-value="ticker?.price_change"> </FinancialValue>
+                    (<FinancialValue :model-value="ticker?.price_change_percent" :decimals="2" >  </FinancialValue>%)
                 </div>
             </div>
             <div class="additional-data">
                 <FinancialValue :flash="true" :label="'High price'" :model-value="ticker?.high_price"> </FinancialValue>
                 <FinancialValue :flash="true" :label="'Low price'"  :model-value="ticker?.low_price"></FinancialValue>
-                <FinancialValue :label="'N trades'" :model-value="ticker?.number_of_trades"> </FinancialValue>
+                <FinancialValue :label="'N trades'" :decimals="0" :model-value="ticker?.number_of_trades"> </FinancialValue>
             </div>
             <div class="additional-data">
 
                 <FinancialValue :label="'Opening price'" :model-value="ticker?.opening_price"> </FinancialValue>
-                <FinancialValue :label="'Trade volume'" :model-value="ticker?.trade_volume"> </FinancialValue>
+                <FinancialValue :label="'Trade volume'" :model-value="ticker?.trade_volume" :decimals="2"> </FinancialValue>
                 <FinancialValue :flash="true" :label="'VWAP'" :model-value="ticker?.vwap"> </FinancialValue>
             </div>
         </div>
@@ -86,7 +105,7 @@ let assetName = assetsService.getCoinName(symbol)
 <style scoped>
 img {
     height: auto;
-    margin: auto 35px auto auto;
+    margin: auto 35px auto;
 }
 .identifier {
     display: flex;
@@ -100,6 +119,7 @@ img {
     flex-direction: column;
     align-items: flex-start;
     font-size: 20px;
+    margin-left: auto;
 }
 .additional-data p {
     white-space: nowrap;
@@ -110,7 +130,10 @@ img {
     display: flex;
     font-size: 25px;
     margin-left: 25px;
-    margin-bottom: 20px;
+    margin-bottom: 55px;
+    margin-top: 50px;
+    width: 100%;
+
 }
 
 .sub-identifier {
@@ -169,5 +192,9 @@ img {
 }
 .ask {
     color: #f05350;
+}
+
+FinancialValue {
+    margin-right: 40px;
 }
 </style>

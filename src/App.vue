@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import VerticalToolbar from './components/VerticalToolbar.vue';
 import { RouterView } from 'vue-router';
-
 </script>
 
 <template>

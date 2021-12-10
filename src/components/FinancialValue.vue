@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { watch, ref } from 'vue';
+import { watch, ref, computed } from 'vue';
 import { gsap } from "gsap";
 
 const DECREASING_COLOR = "#f05350";
@@ -7,12 +7,15 @@ const INCREASING_COLOR = "#26a69a";
 
 const element = ref(null)
 
-const props = defineProps({
-    label: String,
-    modelValue: Number,
+const props = withDefaults(defineProps<{
+    label?: String,
+    modelValue?: Number,
+    decimals: Number,
     flash: Boolean
-})
-
+}>(), {
+  decimals: 3,
+  flash: false
+});
 
 watch(
     () => props.modelValue,
@@ -41,12 +44,19 @@ watch(
     }
 )
 
+
+const roundedValue = computed(() => {
+    const modelValue : Number= props?.modelValue || 0;
+    return (Math.round(modelValue.valueOf() * 100) / 100).toFixed(props.decimals.valueOf());
+ });
+
+
 </script>
 
 <template>
     <div class="value-container">
         <label v-if="props.label">{{ props.label }} </label>
-        <p ref="element">{{ props.modelValue?.toFixed(2) }}</p>
+        <p ref="element">{{ roundedValue }}</p>
     </div>
 </template>
 
@@ -61,7 +71,6 @@ watch(
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-right: 40px;
     margin-bottom: 10px;
 }
 
