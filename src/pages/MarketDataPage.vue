@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onUnmounted } from "vue";
+import { ref, onUnmounted, computed, watch } from "vue";
 import PageContainer from '../components/PageContainer.vue';
 import PageTitle from '../components/PageTitle.vue';
 import marketDataRestClient from '../rest/market-data.rest-client';
@@ -11,14 +11,14 @@ import FinancialValue from "../components/FinancialValue.vue";
 import SearchTextField from "../components/SearchTextField.vue";
 import coins from "../assets/criptos.json";
 
-let symbol = 'adausdt';
+let symbol =  ref("ETH");
 
 let depth = ref({} as OphrysDepth);
 let ticker = ref({} as OphrysTicker);
 
 let coinsData = Object.values(coins);
 
-marketDataRestClient.getDepth(symbol).then(depthResponse => {
+marketDataRestClient.getDepth(symbol.value + "USDT").then(depthResponse => {
     depthResponse.asks = depthResponse.asks.filter( a => a[1] > 0)
     depthResponse.bids = depthResponse.bids.filter( b => b[1] > 0)
     depth.value = depthResponse;
@@ -26,7 +26,7 @@ marketDataRestClient.getDepth(symbol).then(depthResponse => {
 
 
 let depthInterval = setInterval(() => {
-    marketDataRestClient.getDepth(symbol).then(depthResponse => {
+    marketDataRestClient.getDepth(symbol.value + "USDT").then(depthResponse => {
         depthResponse.asks = depthResponse.asks.filter( a => a[1] > 0)
         depthResponse.bids = depthResponse.bids.filter( b => b[1] > 0)
         depth.value = depthResponse;
@@ -34,12 +34,12 @@ let depthInterval = setInterval(() => {
 }, 2000)
 
 
-marketDataRestClient.getTicker(symbol).then(tickerResponse => {
+marketDataRestClient.getTicker(symbol.value  + "USDT").then(tickerResponse => {
     ticker.value = tickerResponse;
 });
 
 let tickerInterval = setInterval(() => {
-    marketDataRestClient.getTicker(symbol).then(tickerResponse => {
+    marketDataRestClient.getTicker(symbol.value  + "USDT").then(tickerResponse => {
         ticker.value = tickerResponse;
     });
 }, 2000)
@@ -59,19 +59,36 @@ onUnmounted(() => {
     clearInterval(tickerInterval)
 })
 
-let logoUrl = assetsService.getCoinLogoUrl(symbol)
-let assetName = assetsService.getCoinName(symbol)
+const logoUrl = computed(()=>{
+    return assetsService.getCoinLogoUrl(symbol.value)
+}) 
+
+watch(
+    () => symbol.value,
+    (newSymbol, prevSymbol) => {
+        marketDataRestClient.getDepth(newSymbol + "USDT").then(depthResponse => {
+            depthResponse.asks = depthResponse.asks.filter( a => a[1] > 0)
+            depthResponse.bids = depthResponse.bids.filter( b => b[1] > 0)
+            depth.value = depthResponse;
+        });
+
+        marketDataRestClient.getTicker(newSymbol  + "USDT").then(tickerResponse => {
+            ticker.value = tickerResponse;
+        });
+    }
+)
 </script>
 
 <template>
     <PageContainer>
         <PageTitle>Market Data</PageTitle>
         <div class="header">
-            <img v-bind:src="logoUrl" />
+            <div class="logo-container">
+                <img v-bind:src="logoUrl" />
+            </div>
             <div class="identifier">
-                <SearchTextField :item-key="'key'" :limit="10" :item-presentation="'name'" :data-source="coinsData"  ></SearchTextField>
-                <p class="name">{{ assetName }}</p>
-                <p class="symbol">{{ ticker?.symbol }}</p>
+                <SearchTextField :item-key="'symbol'" :limit="10" :item-presentation="'name'" :model-value="symbol" :data-source="coinsData" @update:model-value="symbol = $event" ></SearchTextField>
+                <p class="symbol">{{ symbol + "USDT" }}</p>
             </div>
             <div class="sub-identifier">
                 <FinancialValue class="last-price" :flash="true" :model-value="ticker?.last_price"></FinancialValue>
@@ -103,6 +120,11 @@ let assetName = assetsService.getCoinName(symbol)
 </template>
 
 <style scoped>
+
+.logo-container {
+    width: 200px;
+}
+
 img {
     height: auto;
     margin: auto 35px auto;
@@ -194,7 +216,5 @@ img {
     color: #f05350;
 }
 
-FinancialValue {
-    margin-right: 40px;
-}
+
 </style>

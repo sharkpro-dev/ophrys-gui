@@ -2,6 +2,15 @@
 import { watch, ref, computed } from 'vue';
 import { gsap } from "gsap";
 
+
+let formatter = new Intl.NumberFormat('en-US', {
+  style: 'decimal',
+  minimumFractionDigits: 2
+  // These options are needed to round to whole numbers if that's what you want.
+  //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+  //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+});
+
 const DECREASING_COLOR = "#f05350";
 const INCREASING_COLOR = "#26a69a";
 
@@ -47,7 +56,8 @@ watch(
 
 const roundedValue = computed(() => {
     const modelValue : Number= props?.modelValue || 0;
-    return (Math.round(modelValue.valueOf() * 100) / 100).toFixed(props.decimals.valueOf());
+    //return (Math.round(modelValue.valueOf() * 100) / 100).toFixed(props.decimals.valueOf());
+    return formatter.format(modelValue.valueOf())
  });
 
 
